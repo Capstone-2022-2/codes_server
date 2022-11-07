@@ -125,7 +125,6 @@ def result(request):
         score = request.GET.get('score')
         speed = (int(score) // int(TIME)) * 60
         miss = request.GET.get('miss')
-        # score2 = int((int(score) - int(miss) // int(score)) * 100 // 100.0)
         score2 = int(100 * ((int(score)-int(miss))/int(score)))
 
 
@@ -150,8 +149,18 @@ def result(request):
 
 def manage_result(request):
     if request.method == "POST" and 'manageresult' in request.POST:
-        print("POST성공")
+        print("POST 성공")
         if request.POST['manageresult'] == '결과 저장하기':
+            # presult_data = Presult()
+            # presult_data.presult_accuracy = score2
+            # presult_data.speed = speed
+            # presult_data.date_time = pday
+            # presult_data.presult_time = TIME
+            # presult_data.presult_false_num = miss
+            # presult_data.presult_summary = none
+            # presult_data.user_id = User.objects.get(pk=user_id)
+            # presult_data.practice_id = Practice.objects(pk=pratice_id)
+            # presult_data.save()
             print("결과 저장")
         elif request.POST['manageresult'] == '다시하기':
             print("다시")
