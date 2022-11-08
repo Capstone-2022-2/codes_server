@@ -31,8 +31,9 @@ def upractice_first(request):
 
             uall = Upractice.objects.filter(writer=request.user)  # main에서 들어오는 Upractice의 모든 값을 uall에 저장
             context = {'uall': uall}
+            url = "http://127.0.0.1:8000/upractice/"
+            return HttpResponseRedirect(url, context)
 
-            return render(request, "upracticeapp/upractice_main.html", context)
 
     except Exception as identifier:
         print(identifier)
