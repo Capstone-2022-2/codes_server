@@ -6,7 +6,7 @@ from urllib import parse
 import requests
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
@@ -133,37 +133,68 @@ def result(request):
 
 
         context = {'TIME': TIME, 'score': score, 'miss':miss, 'user':user, 'pday':pday,
-                   'speed':speed, 'score2':score2}
+                   'speed':speed, 'score2':score2, 'pnum':pnum}
         return render(request, 'practiceapp/practice_result.html', context)
 
 
 
-    # time = request.GET.get('TIME')
-    # score = request.GET.get('score')
-    # miss = request.GET.get('miss')
-    # print("시간",time,"스코어",score,"미스",miss)
-    # sendData = request.GET.get('TIME')
-    # print(sendData)
-    # return JsonResponse(data={})
-    # return render(request, 'practiceapp/practice_result.html')
 
 def manage_result(request):
     if request.method == "POST" and 'manageresult' in request.POST:
         print("POST 성공")
+        presult_accuracy = request.POST.get('score2')
+        presult_speed = request.POST.get('speed')
+        data_time = request.POST.get('pday')
+        presult_time = request.POST.get('time')
+        presult_false_num = request.POST.get('miss')
+        presult_summary = request.POST.get('summary')
+        user_id = request.user
+        practice_id = int(request.POST.get('pnum'))
+        # 현재주소받아와서리다이렉트에사용
+        url = request.POST.get('url')
+        print(url)
+        print(presult_accuracy,presult_speed,data_time,presult_time,presult_false_num,presult_summary,user_id,practice_id)
         if request.POST['manageresult'] == '결과 저장하기':
-            # presult_data = Presult()
-            # presult_data.presult_accuracy = score2
-            # presult_data.speed = speed
-            # presult_data.date_time = pday
-            # presult_data.presult_time = TIME
-            # presult_data.presult_false_num = miss
-            # presult_data.presult_summary = none
-            # presult_data.user_id = User.objects.get(pk=user_id)
-            # presult_data.practice_id = Practice.objects(pk=pratice_id)
-            # presult_data.save()
             print("결과 저장")
+            presult_data = Presult()
+            presult_data.presult_accuracy = presult_accuracy
+            presult_data.presult_speed = presult_speed
+            presult_data.date_time = data_time
+            presult_data.presult_time = presult_time
+            presult_data.presult_false_num = presult_false_num
+            presult_data.presult_summary = presult_summary
+            presult_data.user_id = User.objects.get(pk=user_id.pk)
+            presult_data.practice_id = Practice.objects.get(practice_id=practice_id)
+            presult_data.save()
+            print('결과 저장 완료')
+            return HttpResponseRedirect(url)
         elif request.POST['manageresult'] == '다시하기':
+            practice_id = Practice.objects.get(practice_id=practice_id)
             print("다시")
+            return render(request, 'practiceapp/manage_result.html')
         else:
-            print("계속")
-    return render(request, 'practiceapp/manage_result.html')
+            print("다른 경우")
+            return render(request, 'practiceapp/manage_result.html')
+    elif request.method == "GET" and 'replay' in request.GET:
+        if request.GET['replay'] == '계속하기':
+            print('계속하기 선택')
+            return render(request, 'practiceapp/practice_first.html')
+        else:
+            print("에러")
+    else:
+        print("모든 거 해당 X")
+
+
+def rerere(request, pk):
+    if request.method == "GET" and 'rerere' in request.GET:
+        if request.GET['rerere'] == '다시하기':
+            print('다시하기 선택')
+            # pk = request.GET['pnum']
+            print("re에서 pnum",pk)
+            practice_select = Practice.objects.filter(pk=pk)
+            print(practice_select)
+            context = {'practice_select': practice_select}
+            return render(request, 'practiceapp/practice_second.html', context)
+        else:
+            print("에러")
+    return render(request, 'practiceapp/practice_second.html')
