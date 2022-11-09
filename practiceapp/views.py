@@ -27,10 +27,11 @@ def practice_create(request):
         return render(request, "practiceapp/create_code.html", context)
     elif request.method == "POST":
         language_id = request.POST.get('language_id')
-        content = request.POST.get('content')
+        content1 = request.POST.get('content')
+        content = content1.replace('\r','')
         result = request.POST.get('result')
         source = request.POST.get('source')
-        print(language_id, content, result, source, len(content))
+
 
         practice_data = Practice()
         practice_data.code_language = Language.objects.get(pk=language_id)

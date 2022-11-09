@@ -241,42 +241,63 @@
         let miss = 0;
 
         let state = true;
+        const leng = checkTexts.length
+        let i = 0
 
         window.addEventListener('keydown', e => {
             state = true;
-
-
-            if (e.key === checkTexts[0].textContent) {
+            if (e.key === checkTexts[i].textContent) {
                 if (!state) return;
                 console.log("score");
-                checkTexts[0].className = 'add-green';
-
+                checkTexts[i].className = 'add-green';
+                i++;
                 score++;
                 scoreLabel.textContent = score;
-                checkTexts.shift();
-            } else if (e.keyCode == 9) {
+                // checkTexts.shift();
+            } else if (e.keyCode === 9) {
                 e.preventDefault()
                 // {#다른 선택지로 가는 것을 막는것#}
-                checkTexts[0].className = 'add-tab';
-                score = score + 1;
-                checkTexts.shift();
+                checkTexts[i].className = 'add-tab';
+                i++;
+                score++;
+                scoreLabel.textContent = score;
+                // checkTexts.shift();
             } else if (e.keyCode === 13) {
-                checkTexts[0].className = 'add-next';
-                score = score + 2;
-                checkTexts.shift();
-            } else if (e.keyCode == 8) {
-                checkTexts[0].className = 'add-gray';
-            } else {
-                if (!state) return;
-                checkTexts[0].className = 'add-red';
-                var bool = event.shiftKey;
-                if (bool == true) {
-                } else if (bool == false) {
-                    miss++;
+                if (checkTexts[i].textContent === ' ') {
+                    checkTexts[i].className = 'add-next';
+                    i++;
+                    score++;
+                    scoreLabel.textContent = score;
+                }
+                else {
+                    checkTexts[i].className = 'add-red';
+                    score++;
+                    i++;
+                }
+            } else if (e.keyCode === 8) {
+                if (i === 0){
+                    alert("확인을 누르고 연습을 다시 시작해주세요")
+                    TIME = 0
+                    miss = 0
                     missLabel.textContent = miss;
                 }
+                else{
+                    i = i - 1;
+                    score--;
+                    miss++;
+                    checkTexts[i].className = 'add-gray';
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
+                    }
+            } else {
+                if (e.key !== checkTexts[i].textContent){
+                    checkTexts[i].className = 'add-red';
+                    score++;
+                    i++;
+                }
             }
-            if (checkTexts.length == 0) {
+
+            if (i === leng) {
                 clearInterval();
                 Swal.fire({
                     title: title2,
