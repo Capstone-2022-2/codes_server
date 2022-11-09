@@ -48,5 +48,10 @@ class AccountDeleteView(DeleteView):
     template_name = 'mainapp/delete.html'
 
 
-def practice_result(request):
-    return render(request, 'mainapp/user_result.html')
+def practice_result(request,pk):
+    print(pk)
+    print(type(pk))
+    user = User.objects.get(pk=pk)
+    print(user)
+    context = {'user': user}
+    return render(request, 'mainapp/user_result.html', context)

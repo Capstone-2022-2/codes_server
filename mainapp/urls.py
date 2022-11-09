@@ -10,7 +10,6 @@ app_name = 'mainapp'
 urlpatterns = [
     path('', main_page, name='mainpage'),
     path('signup/', AccountCreateView.as_view(), name='signup'),
-
     path('login/', LoginView.as_view(template_name='mainapp/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('detail/<int:pk>', AccountDetailView.as_view(), name='detail'),
