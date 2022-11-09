@@ -1,4 +1,6 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from datetime import datetime
+
+from django.http import HttpResponseRedirect, JsonResponse, request
 from django.shortcuts import render
 
 # Create your views here.
@@ -52,3 +54,27 @@ def delete_upractice(request):
     print(request.GET['upractice_id'])
     Upractice.objects.filter(pk=request.GET['upractice_id']).delete()
     return JsonResponse(data={})
+
+def uresult(request):
+    print("result 실행")
+
+    if request.method == "GET":
+        uuser = request.user
+        uprac = Upractice()
+        upday = datetime.now()
+        uTIME = request.GET.get('TIME')
+        uscore = request.GET.get('score')
+        uspeed = (int(uscore) // int(uTIME)) * 60
+        umiss = request.GET.get('miss')
+        uscore2 = int(100 * ((int(uscore)-int(umiss))/int(uscore)))
+
+
+        print(uTIME,uscore,umiss,uuser,uspeed)
+
+
+
+        context = {'uTIME': uTIME, 'uscore': uscore, 'umiss':umiss, 'uuser':uuser, 'upday':upday,
+                   'uspeed':uspeed, 'uscore2':uscore2,}
+        return render(request, 'upracticeapp/upractice_uresult.html', context)
+
+

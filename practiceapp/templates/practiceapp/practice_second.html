@@ -191,19 +191,6 @@
 
         function moveresult(pnum, TIME, score, miss) {
             location.href = "{% url 'practiceapp:result' %}" + "?pnum=" + pnum + "&TIME=" + TIME + "&score=" + score + "&miss=" + miss
-            // jQuery.ajax({
-            //     url: "result",
-            //     type: "GET",
-            //     data: sendData,
-            //     dataType: "json",
-            //     success: function (){
-            //         location.href = "/practice/second/result?"+"TIME="+TIME+"&score="+score+"&miss="+miss
-            //     },
-            //     error: function (){
-            //     }
-            // });
-            // data = {'TIME':TIME, 'score':score, 'miss':miss}
-            // location.href = "{% url 'practiceapp:result' %}"
         }
 
 
@@ -268,29 +255,31 @@
                     i++;
                     score++;
                     scoreLabel.textContent = score;
-                }
-                else {
+                } else {
                     checkTexts[i].className = 'add-red';
                     score++;
                     i++;
                 }
             } else if (e.keyCode === 8) {
-                if (i === 0){
+                if (i === 0) {
                     alert("확인을 누르고 연습을 다시 시작해주세요")
                     TIME = 0
                     miss = 0
                     missLabel.textContent = miss;
-                }
-                else{
+                } else {
                     i = i - 1;
                     score--;
                     miss++;
                     checkTexts[i].className = 'add-gray';
                     scoreLabel.textContent = score;
                     missLabel.textContent = miss;
-                    }
+                }
+            } else if (e.keyCode === 16) {
+                checkTexts[i].className = 'add-gray';
+            } else if (e.keyCode == 20) {
+                checkTexts[i].className = 'add-gray';
             } else {
-                if (e.key !== checkTexts[i].textContent){
+                if (e.key !== checkTexts[i].textContent) {
                     checkTexts[i].className = 'add-red';
                     score++;
                     i++;

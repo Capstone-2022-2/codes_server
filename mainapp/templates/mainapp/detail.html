@@ -31,7 +31,7 @@
 <!--                             border: 3px solid black;"></p></div>-->
 <!--            {% endif %}-->
 <!--            </p>-->
-            <p class="korean" style="text-align: center; margin-top: 10%; font-size: large">내정보<br>
+            <p class="korean" style="text-align: center; margin-top: 8%; font-size: large">내정보<br>
             {% if not target_user.is_authenticated %}
                     <div style="text-align: center; margin-top: 20%;">
                         회원가입을 해주세요.
@@ -42,8 +42,8 @@
                     {% else %} <!-- user가 존재할때 -->
                         {% if target_user.profile.m_emoticon.url %} <!-- 프로필 존재할 때 이미지-->
                         <img src="{{ target_user.profile.m_emoticon.url }}" alt=""
-                             style="height: 12rem; width: 12rem; border-radius: 20rem;margin-left: 2rem;
-                                                border: 3px solid black; margin-top: 20%">
+                             style="height: 12rem; width: 12rem; border-radius: 20rem;
+                                                border: 3px solid black; margin-top: 10%">
                         {% else %} <!-- 프로필 존재하지 않을 때 이미지 없이 빈 동그라미-->
                         <div style="text-align: center; margin-top: 20%;">
                             <p style="height: 12rem; width: 12rem; border-radius: 20rem; margin: 0 auto;
