@@ -18,7 +18,8 @@ def upractice_first(request):
     try:
         if request.method == "POST":
             utitle = request.POST.get('utitle')
-            ucontent = request.POST.get('ucontent')
+            ucontent1 = request.POST.get('ucontent')
+            ucontent = ucontent1.replace('\r', '')
             uresult = request.POST.get('uresult')
             print(utitle, ucontent, uresult, len(ucontent))
 
