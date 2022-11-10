@@ -1,1 +1,126 @@
-<h2>upractice 결과창 ㅠㅠ</h2>
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        .korean {
+            font-family: 'Nanum Gothic Coding', monospace;
+        }
+
+        .w-btn {
+            position: relative;
+            border: none;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 15px;
+            font-family: "paybooc-Light", sans-serif;
+            text-decoration: none;
+            transition: 0.25s;
+        }
+
+        .w-btn-ccc {
+            background-color: #CCCBF2;
+            color: black;
+        }
+
+        .div3 {
+            text-decoration: none;
+            color: black;
+        }
+
+        .div3 :hover {
+            background-color: white;
+            transition: .5s;
+            color: #504DD2;
+            border-radius: 5px;
+        }
+    </style>
+
+    <div class="korean"
+         style="height: 36rem; width: 100%; display: flex; justify-content: center; margin-top: 4%; padding-left: 4%;">
+        <div style="height: 100%; width: 80%">
+            <div style="padding:1rem; border: 1px solid #504DD2;border-radius: 2rem; display: inline-block;height: 100%; width: 24%; margin-right:.5%;vertical-align: top">
+                <p class="korean" style="text-align: center; margin-top: 10%; font-size: large">내정보<br></p>
+                    {% if not user.is_authenticated %}
+                    <div style="text-align: center; margin-top: 20%;">
+                        회원가입을 해주세요.
+                    </div>
+                    <div style="text-align: center; height: 40%; margin-top: 1rem">
+                        <p style="text-decoration: none;">회원정보가 없습니다.</p>
+                    </div>
+                    {% else %}
+                        {% if user.profile.m_emoticon.url %} <!-- 프로필 존재할 때 이미지-->
+                        <img src="{{ user.profile.m_emoticon.url }}" alt=""
+                             style="height: 12rem; width: 12rem; border-radius: 20rem;margin-left: 2.7rem;
+                                                border: 3px solid black; margin-top: 20%">
+                        <div style="text-align: center; height: 40%; margin-top: 1rem">
+                            <h2 style="font-size: medium">
+                                {{ user.profile.user_nick }} 님 <br> 연습결과 <!--닉네임-->
+                            </h2>
+                        </div>
+                        {% else %} <!-- 프로필 존재하지 않을 때 이미지 없이 빈 동그라미-->
+                        <div style="text-align: center; margin-top: 20%;">
+                            <p style="height: 12rem; width: 12rem; border-radius: 20rem; margin: 0 auto;
+                                                        border: 3px solid black;"></p>
+                            <div style="text-align: center; height: 40%; margin-top: 1rem">
+                                <p style="text-decoration: none;">
+                                    {{ user }} 님 <br> 연습결과 <!--아이디-->
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+
+            </div>
+            <div style="padding:2.5rem 2rem; border: 1px solid #504DD2;border-radius: 2rem; display: inline-block;height: 100%; width: 70%; margin-right:.5%;vertical-align: top">
+                <div style="height: 47%; width: 100%;">
+                    <p>연습 일자: {{ upday }}</p>
+                    <p>소요 시간: {{ uTIME }}초</p>
+                    <p>오타 횟수: {{ umiss }}번</p>
+                    <p>타자 속도: {{ uspeed }}</p>
+                    <p>정확도: {{ uscore2 }}%</p>
+                </div>
+                <hr style="background-color: #504DD2; height:.1rem; border:0px">
+                <div style="height: 33%; width: 100%;">
+                    <p style="text-align: center;">※ 요약 ※</p>
+                    <p>
+                        {% if uspeed >= 400 %}
+                            - 타자 속도가 정말 수준급 입니다.
+                        {% elif uspeed >= 200 %}
+                            - 타자 속도가 빠릅니다.
+                        {% elif uspeed >= 100 %}
+                            - 타자 속도가 보통입니다.
+                        {% else %}
+                            - 타자 속도가 느립니다. 조금 더 연습하세요.
+                        {% endif %}
+                    </p>
+                    <p>
+                        {% if uscore2 == 100 %}
+                            - 타자 정확도가 완벽합니다.
+                        {% elif uscore2 >= 90 %}
+                            - 타자 정확도가 높은 수준입니다.
+                        {% elif uscore2 >= 75 %}
+                            - 타자 정확도가 보통입니다.
+                        {% else %}
+                            - 타자 정확도가 낮습니다. 조금 더 연습하세요.
+                        {% endif %}
+                    </p>
+                </div>
+                <hr style="height:.1rem; border:0px">
+                <div style="height: auto; padding: 0 1%; text-align: center">
+                    <div style="display:inline-block;width: 32%">
+                            <input type="submit" class="w-btn w-btn-ccc col-12" value="결과 저장하기">
+                    </div>
+                    <div style="display:inline-block;width: 32%">
+                        <form action="{% url 'upracticeapp:mainupractice' %}" method="post">
+                        {% csrf_token %}
+                            <input type="submit" class="w-btn w-btn-ccc col-12" value="목록으로">
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
