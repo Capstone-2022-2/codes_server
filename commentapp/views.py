@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -38,4 +39,8 @@ class CommentDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse('postapp:detail', kwargs={'pk': self.object.post.pk})
+
+
+
+
 

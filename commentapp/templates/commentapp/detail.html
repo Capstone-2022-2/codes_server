@@ -30,11 +30,29 @@
     </div>
     {% if comment.writer == user %}
     <div style="text-align: right;">
-        <a href="{% url 'commentapp:delete' pk=comment.pk %}" class="w-btn w-btn-ccc col-1.5 mt-4">
-            댓글 삭제
-        </a>
+        <button style="outline: 0; border: 0;background-color:transparent; color:red" onclick="delete_comment(`{{ comment.comment_id }}`)">댓글 삭제</button>
     </div>
     {% endif %}
 
 
 </div>
+
+<script>
+    function delete_comment(comment) {
+        alert("댓글을 삭제하시겠습니까?")
+        $.ajax({
+            url: 'delete_comment',
+            type: 'GET',
+            data: {
+                'comment': comment,
+            },
+            dataType: 'json',
+            success: function (data) {
+                window.location.reload()
+            },
+            error: function (data) {
+                alert("게시글 삭제 실패")
+                window.location.reload()
+            }
+        })
+    }</script>

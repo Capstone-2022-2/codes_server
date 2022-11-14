@@ -9,6 +9,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView,
 from django.views.generic.edit import FormMixin
 
 from commentapp.forms import CommentCreationForm
+from commentapp.models import Comment
 from postapp.dacorators import post_ownership_required
 from postapp.forms import PostCreationForm
 from postapp.models import Post
@@ -70,4 +71,11 @@ def delete(request):
     print('실행!')
     print(request.GET['post'])
     Post.objects.filter(pk=request.GET['post']).delete()
+    return JsonResponse(data={})
+
+
+def delete_comment(request):
+    print('실행!')
+    print(request.GET['comment'])
+    Comment.objects.filter(pk=request.GET['comment']).delete()
     return JsonResponse(data={})
