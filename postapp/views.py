@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -64,3 +65,9 @@ class PostListView(ListView):
     context_object_name = 'post_list'
     template_name = 'postapp/list.html'
     paginate_by = 10
+
+def delete(request):
+    print('실행!')
+    print(request.GET['post'])
+    Post.objects.filter(pk=request.GET['post']).delete()
+    return JsonResponse(data={})

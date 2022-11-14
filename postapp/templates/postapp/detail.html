@@ -33,9 +33,7 @@
                         </a>
                     </div>
                     <div style="display: inline-block">
-                        <a href="{% url 'postapp:delete' pk=target_post.pk %}" style="text-decoration: none">
-                        <p style="color: red">삭제</p>
-                        </a>
+                        <button style="outline: 0; border: 0;background-color:transparent; color:red" onclick="delete_post(`{{ target_post.post_id }}`)">삭제</button>
                     </div>
                     <div style="display: inline-block">조회수 : {{ target_post.post_viewnum }}</div>
                     <div style="display: inline-block">추천수 : {{ target_post.like_num }}</div>
@@ -66,6 +64,25 @@
     </div>
 </div>
 
+<script>
+    function delete_post(post) {
+        alert("게시글을 삭제하시겠습니까?")
+        $.ajax({
+            url: 'delete',
+            type: 'GET',
+            data: {
+                'post': post,
+            },
+            dataType: 'json',
+            success: function (data) {
+                location.href = "{% url 'boardapp:detail' pk=1 %}"
+            },
+            error: function (data) {
+                alert("게시글 삭제 실패")
+                window.location.reload()
+            }
+        })
+    }</script>
 
 
 {% endblock %}
