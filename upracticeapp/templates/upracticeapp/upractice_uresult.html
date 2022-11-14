@@ -40,15 +40,15 @@
         <div style="height: 100%; width: 80%">
             <div style="padding:1rem; border: 1px solid #504DD2;border-radius: 2rem; display: inline-block;height: 100%; width: 24%; margin-right:.5%;vertical-align: top">
                 <p class="korean" style="text-align: center; margin-top: 10%; font-size: large">내정보<br></p>
-                    {% if not user.is_authenticated %}
+                {% if not user.is_authenticated %}
                     <div style="text-align: center; margin-top: 20%;">
                         회원가입을 해주세요.
                     </div>
                     <div style="text-align: center; height: 40%; margin-top: 1rem">
                         <p style="text-decoration: none;">회원정보가 없습니다.</p>
                     </div>
-                    {% else %}
-                        {% if user.profile.m_emoticon.url %} <!-- 프로필 존재할 때 이미지-->
+                {% else %}
+                    {% if user.profile.m_emoticon.url %} <!-- 프로필 존재할 때 이미지-->
                         <img src="{{ user.profile.m_emoticon.url }}" alt=""
                              style="height: 12rem; width: 12rem; border-radius: 20rem;margin-left: 2.7rem;
                                                 border: 3px solid black; margin-top: 20%">
@@ -57,7 +57,7 @@
                                 {{ user.profile.user_nick }} 님 <br> 연습결과 <!--닉네임-->
                             </h2>
                         </div>
-                        {% else %} <!-- 프로필 존재하지 않을 때 이미지 없이 빈 동그라미-->
+                    {% else %} <!-- 프로필 존재하지 않을 때 이미지 없이 빈 동그라미-->
                         <div style="text-align: center; margin-top: 20%;">
                             <p style="height: 12rem; width: 12rem; border-radius: 20rem; margin: 0 auto;
                                                         border: 3px solid black;"></p>
@@ -67,8 +67,8 @@
                                 </p>
                             </div>
                         </div>
-                        {% endif %}
                     {% endif %}
+                {% endif %}
 
             </div>
             <div style="padding:2.5rem 2rem; border: 1px solid #504DD2;border-radius: 2rem; display: inline-block;height: 100%; width: 70%; margin-right:.5%;vertical-align: top">
@@ -108,11 +108,28 @@
                 <hr style="height:.1rem; border:0px">
                 <div style="height: auto; padding: 0 1%; text-align: center">
                     <div style="display:inline-block;width: 32%">
-                            <input type="submit" class="w-btn w-btn-ccc col-12" value="결과 저장하기">
+                        <form action="{% url 'upracticeapp:umanage' %}" method="post">
+                            {% csrf_token %}
+                            {% if not user.is_authenticated %}
+                                <input type="submit" style="background-color: lightslategray"
+                                       class="w-btn w-btn-ccc col-12" name="umanageresult" value="결과 저장하기" disabled>
+                            {% else %}
+                                <input type="submit" class="w-btn w-btn-ccc col-12" name="umanageresult"
+                                       value="결과 저장하기">
+                                <input type="hidden" name="uscore2" value="{{ uscore2 }}">
+                                <input type="hidden" name="uspeed" value="{{ uspeed }}">
+                                <input type="hidden" name="upday" value="{{ upday }}">
+                                <input type="hidden" name="utime" value="{{ uTIME }}">
+                                <input type="hidden" name="umiss" value="{{ umiss }}">
+                                <input type="hidden" name="usummary" value="summary 값">
+                                <input type="hidden" name="upnum" value="{{ upnum }}">
+                                <input type="hidden" name="url" value="{{ request.get_full_path }}">
+                            {% endif %}
+                        </form>
                     </div>
                     <div style="display:inline-block;width: 32%">
                         <form action="{% url 'upracticeapp:mainupractice' %}" method="post">
-                        {% csrf_token %}
+                            {% csrf_token %}
                             <input type="submit" class="w-btn w-btn-ccc col-12" value="목록으로">
                         </form>
                     </div>

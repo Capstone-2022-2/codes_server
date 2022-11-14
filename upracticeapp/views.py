@@ -1,12 +1,13 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse, request
 from django.shortcuts import render
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView
-from upracticeapp.models import Upractice
+from upracticeapp.models import Upractice, Upresult
 
 
 def upractice_main(request):
@@ -60,8 +61,9 @@ def uresult(request):
     print("result 실행")
 
     if request.method == "GET":
-        uuser = request.user
+        user = request.user
         uprac = Upractice()
+        upnum = request.GET.get('upnum')
         upday = datetime.now()
         uTIME = request.GET.get('TIME')
         uscore = request.GET.get('score')
@@ -70,12 +72,48 @@ def uresult(request):
         uscore2 = int(100 * ((int(uscore)-int(umiss))/int(uscore)))
 
 
-        print(uTIME,uscore,umiss,uuser,uspeed)
+        print(uTIME, uscore, umiss, user, uspeed, upnum)
 
 
 
-        context = {'uTIME': uTIME, 'uscore': uscore, 'umiss':umiss, 'uuser':uuser, 'upday':upday,
+        context = {'uTIME': uTIME, 'uscore': uscore, 'upnum':upnum, 'umiss':umiss, 'user':user, 'upday':upday,
                    'uspeed':uspeed, 'uscore2':uscore2,}
         return render(request, 'upracticeapp/upractice_uresult.html', context)
 
+def manage_uresult(request):
+    if request.method == "POST" and 'umanageresult' in request.POST:
+        print("POST 성공")
+        upresult_accuracy = request.POST.get('uscore2')
+        upresult_speed = request.POST.get('uspeed')
+        udata_time = request.POST.get('upday')
+        upresult_time = request.POST.get('utime')
+        upresult_false_num = request.POST.get('umiss')
+        upresult_summary = request.POST.get('usummary')
+        user_id = request.user
+        upractice_id = int(request.POST.get('upnum'))
 
+        url = request.POST.get('url')
+        print(url)
+
+        print(url, upresult_accuracy, upresult_speed, udata_time, upresult_time, upresult_false_num, upresult_summary, user_id,
+              upractice_id)
+
+        if request.POST['umanageresult'] == '결과 저장하기':
+            print("결과 저장")
+            upresult_data = Upresult()
+            upresult_data.upresult_accuracy = upresult_accuracy
+            upresult_data.upresult_speed = upresult_speed
+            upresult_data.udate_time = udata_time
+            upresult_data.upresult_time = upresult_time
+            upresult_data.upresult_false_num = upresult_false_num
+            upresult_data.upresult_summary = upresult_summary
+            upresult_data.user_id = User.objects.get(pk=user_id.pk)
+            upresult_data.upractice_id = Upractice.objects.get(upractice_id=upractice_id)
+            upresult_data.save()
+            print('결과 저장 완료')
+            return HttpResponseRedirect(url)
+        elif request.POST['manageresult'] == '목록으로':
+            print("다시")
+            return render(request, 'upracticeapp/upractice_main.html')
+        else:
+            print("에러")
