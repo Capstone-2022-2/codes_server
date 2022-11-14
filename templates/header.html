@@ -64,7 +64,7 @@
                 <div   style="display: inline-block; text-decoration: none;">마이페이지</div>
             </a>
             <strong style="display: inline-block; font-size: 0.8rem; font-family: 'Cabin', sans-serif;">  │  </strong>
-            <a class="div2" style="text-decoration: none; color: black" href="{% url 'mainapp:logout' %}?next={{ request.path }}">
+            <a class="div2" style="text-decoration: none; color: black" href="{% url 'mainapp:logout' %}">
             <div style="display: inline-block; text-decoration: none;">로그아웃</div>
             </a>
             {% endif %}
