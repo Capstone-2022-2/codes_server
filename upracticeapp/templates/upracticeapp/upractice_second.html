@@ -180,8 +180,8 @@
             location.href = "{% url 'upracticeapp:mainupractice' %}"
         }
 
-        function moveresult(upnum, TIME, score, miss) {
-            location.href = "{% url 'upracticeapp:uresult' %}" + "?upnum=" + upnum + "&TIME=" + TIME + "&score=" + score + "&miss=" + miss
+        function moveresult(upnum, TIME, score, miss, back) {
+            location.href = "{% url 'upracticeapp:uresult' %}" + "?upnum=" + upnum + "&TIME=" + TIME + "&score=" + score + "&miss=" + miss + "&back=" + back
         }
 
         function resultcancel() {
@@ -215,11 +215,11 @@
 
         let score = 0;
         let miss = 0;
+        let backspace = 0;
 
         let state = true;
         const leng = checkTexts.length
         let i = 0
-
 
         window.addEventListener('keydown', e => {
             state = true;
@@ -230,6 +230,7 @@
                 i++;
                 score++;
                 scoreLabel.textContent = score;
+                missLabel.textContent = miss;
                 // checkTexts.shift();
             } else if (e.keyCode === 9) {
                 e.preventDefault()
@@ -238,28 +239,36 @@
                 i++;
                 score++;
                 scoreLabel.textContent = score;
+                missLabel.textContent = miss;
                 // checkTexts.shift();
             } else if (e.keyCode === 13) {
-                if (checkTexts[i].textContent === ' ') {
+                if (checkTexts[i].textContent === '\n') {
                     checkTexts[i].className = 'add-next';
                     i++;
                     score++;
                     scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
                 } else {
                     checkTexts[i].className = 'add-red';
                     score++;
+                    miss++;
                     i++;
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
                 }
             } else if (e.keyCode === 8) {
                 if (i === 0) {
                     alert("확인을 누르고 연습을 다시 시작해주세요")
+                    score = 0
                     TIME = 0
                     miss = 0
+                    backspace = 0
+                    scoreLabel.textContent = score;
                     missLabel.textContent = miss;
                 } else {
                     i = i - 1;
                     score--;
-                    miss++;
+                    backspace++;
                     checkTexts[i].className = 'add-gray';
                     scoreLabel.textContent = score;
                     missLabel.textContent = miss;
@@ -271,8 +280,11 @@
             } else {
                 if (e.key !== checkTexts[i].textContent) {
                     checkTexts[i].className = 'add-red';
+                    miss++;
                     score++;
                     i++;
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
                 }
             }
 
@@ -300,6 +312,7 @@
                             confirmButtonColor: '#504DD2',
                             cancelButtonColor: '#14128F',
                         }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
                                 cancel();
                             } else {
@@ -307,9 +320,18 @@
                             }
                         })
                     } else {
+                        // var jsonData = new Object();
+                        // jsonData.TIME = TIME;
+                        // jsonData.score = score;
+                        // jsonData.miss = miss;
+                        //
+                        // // 위에서 만든 json format을 문자열화
+                        // var sendData = jsonData;
+                        // // var sendData = JSON.stringify(jsonData);
+                        // moveresult(sendData)
 
 
-                        moveresult(upnum, TIME, score, miss)
+                        moveresult(upnum, TIME, score, miss, backspace)
 
                             .then((result) => {
                                 if (result.isConfirmed) {

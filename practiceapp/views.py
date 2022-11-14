@@ -126,12 +126,11 @@ def result(request):
         score = request.GET.get('score')
         speed = (int(score) // int(TIME)) * 60
         miss = request.GET.get('miss')
-        score2 = int(100 * ((int(score)-int(miss))/int(score)))
+        back = request.GET.get('back')
+        score2 = 100 * (int(score)-(int(miss)*0.7 + int(back)*0.3))/int(score)
+        score2 = round(score2,2)
 
-
-        print(pnum,TIME,score,miss,user,speed)
-
-
+        print(pnum,TIME,score,miss,user,speed,score2)
 
         context = {'TIME': TIME, 'score': score, 'miss':miss, 'user':user, 'pday':pday,
                    'speed':speed, 'score2':score2, 'pnum':pnum}

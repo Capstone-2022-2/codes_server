@@ -191,8 +191,8 @@
             location.href = "{% url 'practiceapp:firstpractice' %}"
         }
 
-        function moveresult(pnum, TIME, score, miss) {
-            location.href = "{% url 'practiceapp:result' %}" + "?pnum=" + pnum + "&TIME=" + TIME + "&score=" + score + "&miss=" + miss
+        function moveresult(pnum, TIME, score, miss, back) {
+            location.href = "{% url 'practiceapp:result' %}" + "?pnum=" + pnum + "&TIME=" + TIME + "&score=" + score + "&miss=" + miss + "&back=" + back
         }
 
 
@@ -228,6 +228,7 @@
 
         let score = 0;
         let miss = 0;
+        let backspace = 0;
 
         let state = true;
         const leng = checkTexts.length
@@ -242,6 +243,7 @@
                 i++;
                 score++;
                 scoreLabel.textContent = score;
+                missLabel.textContent = miss;
                 // checkTexts.shift();
             } else if (e.keyCode === 9) {
                 e.preventDefault()
@@ -250,28 +252,36 @@
                 i++;
                 score++;
                 scoreLabel.textContent = score;
+                missLabel.textContent = miss;
                 // checkTexts.shift();
             } else if (e.keyCode === 13) {
-                if (checkTexts[i].textContent === ' ') {
+                if (checkTexts[i].textContent === '\n') {
                     checkTexts[i].className = 'add-next';
                     i++;
                     score++;
                     scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
                 } else {
                     checkTexts[i].className = 'add-red';
                     score++;
+                    miss++;
                     i++;
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
                 }
             } else if (e.keyCode === 8) {
                 if (i === 0) {
                     alert("확인을 누르고 연습을 다시 시작해주세요")
+                    score = 0
                     TIME = 0
                     miss = 0
+                    backspace = 0
+                    scoreLabel.textContent = score;
                     missLabel.textContent = miss;
                 } else {
                     i = i - 1;
                     score--;
-                    miss++;
+                    backspace++;
                     checkTexts[i].className = 'add-gray';
                     scoreLabel.textContent = score;
                     missLabel.textContent = miss;
@@ -283,8 +293,11 @@
             } else {
                 if (e.key !== checkTexts[i].textContent) {
                     checkTexts[i].className = 'add-red';
+                    miss++;
                     score++;
                     i++;
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
                 }
             }
 
@@ -331,7 +344,7 @@
                         // moveresult(sendData)
 
 
-                        moveresult(pnum, TIME, score, miss)
+                        moveresult(pnum, TIME, score, miss, backspace)
 
                             // Swal.fire({
                             //     title: '타자연습 상세결과\n' + '\n' + '소요시간: ' + TIME + '초\n' + '맞은 문자 수: ' +
