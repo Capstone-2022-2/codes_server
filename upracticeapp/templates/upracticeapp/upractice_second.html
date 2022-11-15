@@ -47,6 +47,24 @@
             text-decoration-line: underline;
         }
 
+        .add-gray {
+            color: #A9A9A9;
+            font-weight: 900;
+        }
+        @keyframes blink-effect { 50% { opacity: 0; } }
+        .blink {
+            text-decoration: underline;
+            /*text-underline-position: under;*/
+            text-underline-offset: 3px;
+            animation: blink-effect 1s step-end infinite;
+        /*
+            animation-name: blink-effect;
+            animation-duration: 1s;
+            animation-iteration-count:infinite;
+            animation-timing-function:step-end;
+        */
+        }
+
         h1 {
             padding-left: 30%;
         }
@@ -220,22 +238,35 @@
         let state = true;
         const leng = checkTexts.length
         let i = 0
+        checkTexts[i].className = 'blink';
 
         window.addEventListener('keydown', e => {
             state = true;
             if (e.key === checkTexts[i].textContent) {
                 if (!state) return;
                 console.log("score");
-                checkTexts[i].className = 'add-green';
-                i++;
-                score++;
-                scoreLabel.textContent = score;
-                missLabel.textContent = miss;
+                if (i === checkTexts.length - 1) {
+                    checkTexts[i].className = 'add-green';
+                    i++;
+                    score++;
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
+                }
+                else {
+                    checkTexts[i].className = 'add-green';
+                    checkTexts[i + 1].className = 'blink';
+                    i++;
+                    score++;
+                    scoreLabel.textContent = score;
+                    missLabel.textContent = miss;
+                }
+
                 // checkTexts.shift();
             } else if (e.keyCode === 9) {
                 e.preventDefault()
                 // {#다른 선택지로 가는 것을 막는것#}
                 checkTexts[i].className = 'add-tab';
+                checkTexts[i+1].className = 'blink';
                 i++;
                 score++;
                 scoreLabel.textContent = score;
@@ -244,6 +275,7 @@
             } else if (e.keyCode === 13) {
                 if (checkTexts[i].textContent === '\n') {
                     checkTexts[i].className = 'add-next';
+                    checkTexts[i + 1].className = 'blink';
                     i++;
                     score++;
                     scoreLabel.textContent = score;
@@ -266,10 +298,12 @@
                     scoreLabel.textContent = score;
                     missLabel.textContent = miss;
                 } else {
+                    checkTexts[i-1].className = 'blink';
                     i = i - 1;
                     score--;
                     backspace++;
-                    checkTexts[i].className = 'add-gray';
+                    checkTexts[i].className = 'add-gray blink';
+                    checkTexts[i+1].className = 'add-gray';
                     scoreLabel.textContent = score;
                     missLabel.textContent = miss;
                 }
@@ -287,7 +321,6 @@
                     missLabel.textContent = miss;
                 }
             }
-
             if (i === leng) {
                 clearInterval();
                 Swal.fire({
