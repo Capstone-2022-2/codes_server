@@ -55,3 +55,10 @@ def practice_result(request,pk):
     print(user)
     context = {'user': user}
     return render(request, 'mainapp/user_result.html', context)
+
+def page_not_found(request, exception):
+    """
+    404 Page not found
+    """
+    print(exception)
+    return render(request, 'error/404.html', {})
