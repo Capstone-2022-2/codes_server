@@ -13,10 +13,10 @@ environ.Env.read_env(BASE_DIR / '.env')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('reviewdb'),
-        'USER': env('dbmasteruser'),
-        'PASSWORD': env('codes123'),
-        'HOST': env('ls-effa51b199b260903146e54b56c8f3687212f536.cudbqywugn2c.ap-northeast-2.rds.amazonaws.com'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
         'PORT': '5432',
     }
 }
