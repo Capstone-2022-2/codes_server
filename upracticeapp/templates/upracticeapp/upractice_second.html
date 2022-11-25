@@ -242,6 +242,12 @@
 
         window.addEventListener('keydown', e => {
             state = true;
+            $(document).keydown(function (event) {
+                if (event.keyCode == 32) {
+                    console.log(event);
+                    event.preventDefault();
+                }
+            }); // 스크롤 방지
             if (e.key === checkTexts[i].textContent) {
                 if (!state) return;
                 console.log("score");

@@ -62,9 +62,15 @@
 </div>
 
 <div class="korean" style="margin-top:3rem; margin-right:2rem; text-align: right">
+    {% if object.pk == 1 %}
+    <a style="text-decoration: none" class="w-btn w-btn-ccc col-1.5 mt-4">
+        관리자만 접근 허용
+    </a>
+    {% else %}
     <a href="{% url 'postapp:create' %}" class="w-btn w-btn-ccc col-1.5 mt-4">
         글쓰기
     </a>
+    {% endif %}
     </div>
 
     {% include 'snippets/pagination.html' with page_obj=page_obj %}

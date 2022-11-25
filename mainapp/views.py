@@ -12,6 +12,7 @@ from commentapp.models import Comment
 from mainapp.forms import AccountUpdateForm
 from postapp.models import Post
 from upracticeapp.models import Upractice
+from practiceapp.models import Presult
 
 
 def main_page(request):
@@ -53,7 +54,9 @@ def practice_result(request,pk):
     print(type(pk))
     user = User.objects.get(pk=pk)
     print(user)
-    context = {'user': user}
+    result_list = Presult.objects.filter(user_id=user.pk)
+    print(result_list)
+    context = {'user': user, 'result_list': result_list}
     return render(request, 'mainapp/user_result.html', context)
 
 def page_not_found(request, exception):
