@@ -122,8 +122,8 @@
                             <span style="text-align: center; float: right; margin-right: 1rem">
                          <span> Miss score: </span> <span id="miss">0</span>
                     </span>
-                            <span style="text-align: center; margin-left: 27rem">
-                        <span style="margin-left: 4%" id="timer"></span>
+                            <span style="text-align: center; margin-left: 30rem">
+                        <span style="text-align: center" id="timer"></span>
                         <span id="seikai"></span>
                     </span>
                         </div>
@@ -176,9 +176,13 @@
                 cancel();
             } else {
                 const countdown = setInterval(function () {
-                    timer.textContent = '소요시간：' + ++TIME + '초'
-                    if (TIME > 300) finish();
-                    if (!state) return;
+                    if (i === checkTexts.length) {
+                        timer.textContent = '타자연습 끝.'
+                    } else {
+                        timer.textContent = '소요시간：' + ++TIME + '초'
+                        if (TIME > 300) finish();
+                        if (!state) return;
+                    }
                 }, 1000);
 
                 function finish() {
@@ -341,6 +345,7 @@
                 }
             }
             if (i === checkTexts.length) {
+
                 clearInterval();
                 Swal.fire({
                     title: title2,
