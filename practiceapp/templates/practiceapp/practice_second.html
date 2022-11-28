@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-
+{% load sass_tags %}
+<link href="/static/component.scss" rel="stylesheet" type="text/css" />
 
 {% block content %}
 
@@ -89,9 +90,9 @@
         <div style="height: 100%; width: 90%;">
             <div style="height: 8%; width: 100%;">
                 <div style="display:inline-block; height: 100%; width: auto; padding-top: .5rem;
-            padding-left: .5rem; font-size: 20px; margin-bottom: 0;" class="korean">
+                padding-left: .5rem; font-size: 20px; margin-bottom: 0;" class="korean">
                     {% for l in l %}
-                        언어: {{ l.language }}
+                    언어: {{ l.language }}
                     {% endfor %}
 
                 </div>
@@ -134,11 +135,10 @@
                         출처 : {{ p.code_source }}
                         <span style="color: white" id="pnum">{{ p.practice_id }}</span>
                     </div>
-
-                </div>
                 </div>
             {% endfor %}
-    </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <!--<script src="sweetalert2/dist/sweetalert2.min.js"></script>-->
