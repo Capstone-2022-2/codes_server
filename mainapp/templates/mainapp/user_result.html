@@ -108,10 +108,10 @@
                 <!--해당 유저의 데이터를 for문으로 전부 가져옴, 1개일수도있고 10개일수도있어서 최근 몇개로 뽑아 써야할듯-->
                 {% for result_list in result_list %}
                 <p>
-                정확도 : {{ result_list.presult_accuracy }}
-                스피드 : {{ result_list.presult_speed }}
-                연습날짜 : {{ result_list.date_time }}
-                타자연습 시간 : {{ result_list.presult_time }}
+                <span style="display: none" id="accuracy">정확도 : {{ result_list.presult_accuracy }}</span>
+                <span style="display: none" id="speed">스피드 : {{ result_list.presult_speed }}</span>
+                <span style="display: none" id="datetime">연습날짜 : {{ result_list.date_time }}</span>
+                <span style="display: none" id="presulttime">타자연습 시간 : {{ result_list.presult_time }}</span>
                 </p>
                 {% endfor %}
 
@@ -142,6 +142,14 @@
     </div>
 </div>
 <script>
+    <!--데이터 받아온 부분,여러개 데이터를 사용하려면 리스트를 생성해야됨-->
+    var accuracy = document.getElementById('accuracy').innerHTML;
+    var speed = document.getElementById('speed').innerHTML;
+    var datetime = document.getElementById('datetime').innerHTML;
+    var presulttime = document.getElementById('presulttime').innerHTML;
+    <!--데이터 들어온거 확인방법, 사용안할땐 주석처리-->
+    // alert(accuracy)
+
     new Chart(document.getElementById("line-chart"), {
   type: 'line',
   data: {
