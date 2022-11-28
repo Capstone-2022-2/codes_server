@@ -10,7 +10,7 @@
         {% for list in post_list %}
         <div style="border-bottom: 1px solid #504DD2;text-align: center;padding-top: .3rem; padding-bottom: .3rem">
             <div style="display:inline-block; width: 5%; margin-left: 3%">
-                {{ list.post_id }}
+                {{ forloop.counter }}
             </div>
             <div style="display:inline-block; width: 18%;">
                 {{ list.category }}

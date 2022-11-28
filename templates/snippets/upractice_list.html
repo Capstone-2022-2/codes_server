@@ -11,7 +11,7 @@
         {% for list in reverse_ulist %}
         <div style="border-bottom: 1px solid #504DD2;text-align: center;padding-top: .3rem; padding-bottom: .3rem">
             <div style="display:inline-block; width: 5%;">
-                1부터 시작
+                {{ forloop.counter }}
             </div>
             <div style="display:inline-block; width: 43%; margin-left: 5%">
                 <a href="{% url 'upracticeapp:usecondpractice' upractice_id=list.upractice_id %}"

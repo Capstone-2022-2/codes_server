@@ -13,12 +13,7 @@ from upracticeapp.models import Upractice, Upresult
 def upractice_main(request):
     uall = Upractice.objects.filter(writer=request.user) # main에서 들어오는 Upractice의 모든 값을 uall에 저장
     reverse_ulist = uall[::-1]
-    ulen=len(reverse_ulist)
-    ulen_list = []
-    for i in range(ulen):
-        ulen_list.append(i)
-    print(ulen_list)
-    context = {'uall': uall, 'reverse_ulist':reverse_ulist, 'ulen_list':ulen_list}
+    context = {'uall': uall, 'reverse_ulist':reverse_ulist}
     return render(request, "upracticeapp/upractice_main.html", context)
 
 def upractice_first(request):
