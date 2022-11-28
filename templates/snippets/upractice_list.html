@@ -1,37 +1,41 @@
 <style>
-.korean{
+    .korean {
         font-family: 'Nanum Gothic Coding', monospace;
-}
+    }
 </style>
 
 <div>
-    {% if uall %}
+
+    {% if reverse_ulist %}
     <div style="text-align: center;margin-left: 2rem;margin-right: 2rem" class="korean">
-    {% for list in uall %}
+        {% for list in reverse_ulist %}
         <div style="border-bottom: 1px solid #504DD2;text-align: center;padding-top: .3rem; padding-bottom: .3rem">
-        <div style="display:inline-block; width: 5%;">
-            {{ list.upractice_id }}
+            <div style="display:inline-block; width: 5%;">
+                1부터 시작
+            </div>
+            <div style="display:inline-block; width: 43%; margin-left: 5%">
+                <a href="{% url 'upracticeapp:usecondpractice' upractice_id=list.upractice_id %}"
+                   style="text-decoration: none; color: black" method="post">
+                    <div style="margin:0rem;padding: 0rem">
+                        {% csrf_token %}
+                        <!--<input type="submit" value="{{ list.upractice_id }}">-->
+                        {{ list.upractice_title | truncatechars:15 }}
+                    </div>
+                </a>
+            </div>
+            <div style="display:inline-block; width: 20%;margin-left: 5%">
+                {{ list.writer }}
+            </div>
+            <div style="display:inline-block; width: 6%;margin-left: 5%">
+                {{ list.upractice_chnum }}
+            </div>
+            <div style="display:inline-block; width: 3%;margin-left: 5%">
+                <button style="outline: 0; border: 0;background-color:transparent;"
+                        onclick="delete_upractice(`{{ list.upractice_id }}`)">x
+                </button>
+            </div>
         </div>
-        <div style="display:inline-block; width: 43%; margin-left: 5%">
-            <a href="{% url 'upracticeapp:usecondpractice' upractice_id=list.upractice_id %}" style="text-decoration: none; color: black" method="post">
-                <div style="margin:0rem;padding: 0rem">
-                    {% csrf_token %}
-                    <!--<input type="submit" value="{{ list.upractice_id }}">-->
-                    {{ list.upractice_title | truncatechars:15 }}
-                </div>
-            </a>
-        </div>
-        <div style="display:inline-block; width: 20%;margin-left: 5%">
-            {{ list.writer }}
-        </div>
-        <div style="display:inline-block; width: 6%;margin-left: 5%">
-            {{ list.upractice_chnum }}
-        </div>
-        <div style="display:inline-block; width: 3%;margin-left: 5%">
-            <button style="outline: 0; border: 0;background-color:transparent;" onclick="delete_upractice(`{{ list.upractice_id }}`)">x</button>
-        </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
     </div>
     {% else %}
     <div class="korean" style="text-align: center;margin-top: 2rem">
@@ -58,4 +62,5 @@
                 window.location.reload()
             }
         })
-    }</script>
+    }
+</script>
