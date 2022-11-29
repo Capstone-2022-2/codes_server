@@ -37,4 +37,4 @@ class Presult(models.Model):
     practice_id = models.ForeignKey(Practice, on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return str(self.presult_id) + ' - ' + str(self.user_id)
+        return str(self.presult_time)+','+str(self.presult_speed)+','+str(self.presult_false_num)+','+str(self.presult_accuracy)+','+str(self.date_time)

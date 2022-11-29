@@ -104,16 +104,17 @@
         </div>
         <div style="display: inline-block; height: 100%; width:70%;">
             <div style="height: 100%; width: 100%; padding: 1rem">
+                {% if result_list %}
                 <p>나의 연습기록</p>
                 <!--해당 유저의 데이터를 for문으로 전부 가져옴, 1개일수도있고 10개일수도있어서 최근 몇개로 뽑아 써야할듯-->
-                {% for result_list in result_list %}
                 <p>
-                <span style="display: none" id="accuracy">정확도 : {{ result_list.presult_accuracy }}</span>
-                <span style="display: none" id="speed">스피드 : {{ result_list.presult_speed }}</span>
-                <span style="display: none" id="datetime">연습날짜 : {{ result_list.date_time }}</span>
-                <span style="display: none" id="presulttime">타자연습 시간 : {{ result_list.presult_time }}</span>
+                <span style="display: none" id="practice_time">{{ re_time }}</span>
+                <span style="display: none" id="speed">{{ re_speed }}</span>
+                <span style="display: none" id="false">{{ re_false_num }}</span>
+                <span style="display: none" id="accuracy">{{ re_accuracy }}</span>
+                <span style="display: none" id="datetime">{{ re_date_time }}</span>
                 </p>
-                {% endfor %}
+                {% endif %}
 
                 <canvas id="line-chart" width="100" height="50"></canvas>
 <!--                <div style="display: block;height: 80%; width: 100%">-->
@@ -142,13 +143,15 @@
     </div>
 </div>
 <script>
-    <!--데이터 받아온 부분,여러개 데이터를 사용하려면 리스트를 생성해야됨-->
-    var accuracy = document.getElementById('accuracy').innerHTML;
+// practice_time:소요시간,speed:타자속도, false_num:오타횟수, accuracy:정확도, datetime:연습날짜
+    var practice_time = document.getElementById('practice_time').innerHTML;
     var speed = document.getElementById('speed').innerHTML;
+    var false_num = document.getElementById('false').innerHTML;
+    var accuracy = document.getElementById('accuracy').innerHTML;
     var datetime = document.getElementById('datetime').innerHTML;
-    var presulttime = document.getElementById('presulttime').innerHTML;
-    <!--데이터 들어온거 확인방법, 사용안할땐 주석처리-->
-    // alert(accuracy)
+
+    <!--데이터 들어온 거 확인 방법, 사용안할 땐 주석처리-->
+    // alert(speed)
 
     new Chart(document.getElementById("line-chart"), {
   type: 'line',

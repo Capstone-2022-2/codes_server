@@ -50,14 +50,44 @@ class AccountDeleteView(DeleteView):
     template_name = 'mainapp/delete.html'
 
 
-def practice_result(request,pk):
+def practice_result(request, pk):
     print(pk)
     print(type(pk))
     user = User.objects.get(pk=pk)
-    print(user)
     result_list = Presult.objects.filter(user_id=user.pk)
-    print(result_list)
-    context = {'user': user, 'result_list': result_list}
+
+    # 소요시간, 타자속도, 오타횟수, 정확도, 날짜 리스트 생성
+    new_list=[]
+    re_time =[]
+    re_speed =[]
+    re_false_num =[]
+    re_accuracy =[]
+    re_date_time =[]
+
+    # 쿼리셋형태를 단순 리스트로
+    for i in result_list:
+        new_list.append(i)
+
+    # 리스트 안에 [<>,<>,<>]를 [[],[],[]]형태로 변경
+    new_list2=[]
+    for j in range(len(new_list)):
+        test = new_list[j]
+        test = str(test)
+        test2 = test.split(',')
+        test2 = list(test2)
+        new_list2.append(test2)
+
+    # 모델항목에 따라 구분한 리스트 생성
+    for p in range(len(new_list)):
+        re_time.append(new_list2[p][0])
+        re_speed.append(new_list2[p][1])
+        re_false_num.append(new_list2[p][2])
+        re_accuracy.append(new_list2[p][3])
+        re_date_time.append(new_list2[p][4])
+
+
+    context = {'user': user, 'result_list': result_list, 're_time':re_time, 're_speed':re_speed, 're_false_num':re_false_num,
+               're_accuracy':re_accuracy, 're_date_time':re_date_time}
     return render(request, 'mainapp/user_result.html', context)
 
 def page_not_found(request, exception):
