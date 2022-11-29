@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div>
-                <div id="test" style="color: white; font-size: xx-small">{{ g.upractice_content }}</div>
+                <pre id="test" style="color: white; font-size: xx-small">{{ g.upractice_content }}</pre>
                 <div style="height: 10%; width: 100%; text-align: end; font-size: 18px;" class="korean">
                     결과: {{ g.upractice_result }}</div>
                 <div style="height: 26rem; width: 100%; border: 1px solid #504DD2; overflow-y: scroll; padding: 3px">
@@ -189,7 +189,7 @@
         }
 
         var p = document.getElementById('text');
-        const s = document.getElementById('test').innerHTML;
+        const s = document.getElementById('test').innerTEXT;
         var textLists = s;
         var len_textLists = s.length;
         // {##}
