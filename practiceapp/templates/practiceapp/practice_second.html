@@ -202,9 +202,11 @@
 
 
         var p = document.getElementById('text');
-        const s = document.getElementById('test').innerHTML;
-        var textLists = s;
-        var len_textLists = s.length;
+        var s = document.getElementById('test').innerHTML;
+        var re_s = s.replace(/&lt;/gi,'<')
+        var rere_s = re_s.replace(/&gt;/gi,'>')
+        var textLists = rere_s;
+        var len_textLists = rere_s.length;
         // {##}
         var checkTexts = [];
         const pnum = document.getElementById('pnum').innerHTML;
