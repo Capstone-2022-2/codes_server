@@ -32,6 +32,7 @@ class AccountDetailView(DetailView, MultipleObjectMixin):
 
     def get_context_data(self, **kwargs):
         object_list = Post.objects.filter(writer=self.get_object())
+        object_list = object_list[::-1]
         return super(AccountDetailView, self).get_context_data(object_list=object_list, **kwargs)
 
 

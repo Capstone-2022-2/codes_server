@@ -6,6 +6,10 @@
             font-family: 'Nanum Gothic Coding', monospace;
         }
 
+        .bc {
+            background-color: #CCCBF2;
+        }
+
         .w-btn {
             position: relative;
             border: none;
@@ -114,7 +118,7 @@
                                 <input type="submit" style="background-color: lightslategray"
                                        class="w-btn w-btn-ccc col-12" name="umanageresult" value="결과 저장하기" disabled>
                             {% else %}
-                                <input type="submit" class="w-btn w-btn-ccc col-12" name="umanageresult"
+                                <input type="submit" onclick="this.disabled=true" class="w-btn bc col-12" name="umanageresult"
                                        value="결과 저장하기">
                                 <input type="hidden" name="uscore2" value="{{ uscore2 }}">
                                 <input type="hidden" name="uspeed" value="{{ uspeed }}">
