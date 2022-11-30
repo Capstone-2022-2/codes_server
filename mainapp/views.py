@@ -13,6 +13,7 @@ from mainapp.forms import AccountUpdateForm
 from postapp.models import Post
 from upracticeapp.models import Upractice
 from practiceapp.models import Presult
+import pandas as pd
 
 
 def main_page(request):
@@ -68,7 +69,7 @@ def practice_result(request, pk):
     for i in result_list:
         new_list.append(i)
 
-    # 리스트 안에 [<>,<>,<>]를 [[],[],[]]형태로 변경
+    # 리스트 안에 <>를 리스트로 변경
     new_list2=[]
     for j in range(len(new_list)):
         test = new_list[j]
@@ -77,7 +78,6 @@ def practice_result(request, pk):
         test2 = list(test2)
         new_list2.append(test2)
 
-    # 모델항목에 따라 구분한 리스트 생성
     for p in range(len(new_list)):
         re_time.append(new_list2[p][0])
         re_speed.append(new_list2[p][1])
