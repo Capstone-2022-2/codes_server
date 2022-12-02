@@ -2,14 +2,32 @@
 
 {% block content %}
 <style>
-.korean{
+    .w-btn {
+            position: relative;
+            border: none;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 15px;
+            font-family: "paybooc-Light", sans-serif;
+            text-decoration: none;
+            transition: 0.25s;
+        }
+
+    .w-btn-ccc {
+        background-color: #CCCBF2;
+        color: black;
+    }
+
+    .korean {
         font-family: 'Nanum Gothic Coding', monospace;
     }
-.div3 {
+
+    .div3 {
         text-decoration: none;
         color: black;
     }
-.div3 :hover{
+
+    .div3 :hover {
         background-color: white;
         transition: .5s;
         color: #504DD2;
@@ -103,8 +121,9 @@
             </div>
         </div>
         <div style="display: inline-block; height: 100%; width:70%;">
+            <!-- 연습결과데이터가 존재하는 경우 그래프 출력-->
+            {% if result_list %}
             <div style="height: 100%; width: 100%; padding: 1rem">
-                {% if result_list %}
                 <p>나의 연습기록</p>
                 <!--해당 유저의 데이터를 for문으로 전부 가져옴, 1개일수도있고 10개일수도있어서 최근 몇개로 뽑아 써야할듯-->
                 <p>
@@ -114,78 +133,108 @@
                 <span style="display: none" id="accuracy">{{ re_accuracy }}</span>
                 <span style="display: none" id="datetime">{{ re_date_time }}</span>
                 </p>
-                {% endif %}
-
                 <canvas id="line-chart" width="100" height="50"></canvas>
-<!--                <div style="display: block;height: 80%; width: 100%">-->
-<!--                    <div style="text-align: center; margin-left: 2rem; margin-right: 2rem">-->
-<!--                        <div style="border-bottom: 2px solid #504DD2; border-top: 2px solid #504DD2;text-align: center;padding-top: .3rem; padding-bottom: .3rem">-->
-<!--                            <div style="display:inline-block; width: 6%;">-->
-<!--                                번호-->
-<!--                            </div>-->
-<!--                            <div style="display:inline-block; width: 18%;">-->
-<!--                                게시판-->
-<!--                            </div>-->
-<!--                            <div style="display:inline-block; width: 35%;">-->
-<!--                                제목-->
-<!--                            </div>-->
-<!--                            <div style="display:inline-block; width: 32%;">-->
-<!--                                날짜-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    {% include 'snippets/mypage_postlist.html' with post_list=object_list %}-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                {% include 'snippets/pagination.html' with page_obj=page_obj %}-->
             </div>
-        </div>
 
+            <!-- 연습결과데이터가 존재하지않는 경우-->
+            {% else %}
+            <div style="padding:2.5rem 2rem; border: 1px solid #504DD2;border-radius: 2rem; height: 100%; width: 100%">
+                <img src="/static/img/연습결과 그래프 이미지.png"width="100%" height="75%" alt="result_image">
+                <div style="text-align: center">
+                    <p style="margin-top: 1rem;">타자 연습을 한 후, 결과를 저장하면 연습 결과 그래프가 제공됩니다.</p>
+                    <p>타자 연습을 하러 가볼까요??</p>
+                    <a href="{% url 'practiceapp:firstpractice' %}" class="w-btn w-btn-ccc col-6">타자 연습 하기</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 <script>
 // practice_time:소요시간,speed:타자속도, false_num:오타횟수, accuracy:정확도, datetime:연습날짜
     var practice_time = document.getElementById('practice_time').innerHTML;
-    var speed = document.getElementById('speed').innerHTML;
-    var false_num = document.getElementById('false').innerHTML;
-    var accuracy = document.getElementById('accuracy').innerHTML;
-    var datetime = document.getElementById('datetime').innerHTML;
+    var pt = practice_time.replaceAll('[', "");
+    pt = pt.replaceAll(']', "");
+    pt = pt.replaceAll('\'', "");
+    pt = pt.replaceAll(' ', "");
+    const str_pt = pt;
+    const arr_pt = str_pt.split(',');
+    console.log(Array.isArray(arr_pt));
 
-    <!--데이터 들어온거 확인방법, 사용안할땐 주석처리-->
-    // alert(false_num)
+    var speed = document.getElementById('speed').innerHTML;
+    var sp = speed.replaceAll('[', "");
+    sp = sp.replaceAll(']', "");
+    sp = sp.replaceAll('\'', "");
+    sp = sp.replaceAll(' ', "");
+    const str_sp = sp;
+    const arr_sp = str_sp.split(',');
+    console.log(Array.isArray(arr_sp));
+
+
+    var false_num = document.getElementById('false').innerHTML;
+    var fn = false_num.replaceAll('[', "");
+    fn = fn.replaceAll(']', "");
+    fn = fn.replaceAll('\'', "");
+    fn = fn.replaceAll(' ', "");
+    const str_fn = fn;
+    const arr_fn = str_fn.split(',');
+    console.log(Array.isArray(arr_fn));
+
+    var accuracy = document.getElementById('accuracy').innerHTML;
+    var acc = accuracy.replaceAll('[', "");
+    acc = acc.replaceAll(']', "");
+    acc = acc.replaceAll('\'', "");
+    acc = acc.replaceAll(' ', "");
+    const str_acc = acc;
+    const arr_acc = str_acc.split(',');
+    console.log(Array.isArray(arr_acc));
+
+    var datetime = document.getElementById('datetime').innerHTML;
+    var dt = datetime.replaceAll('[', "");
+    dt = dt.replaceAll(']', "");
+    dt = dt.replaceAll('\'', "");
+    dt = dt.replaceAll(' ', "");
+    const str_dt = dt;
+    const arr_dt = str_dt.split(',');
+    var arr_dt2 = [];
+    for (i = 0; i < arr_dt.length; i++){
+        arr_dt2.push(arr_dt[i].substr(0,10) + '-' + arr_dt[i].slice(10,15));
+    }
+
 
     new Chart(document.getElementById("line-chart"), {
-  type: 'line',
-  data: {
-    labels: [20221105,221106,221107,221108,221109,221110,221111,221112,221113,221114],
-    datasets: [{
-        data: [5,11,20,21,22,25,34,36,27,46],
-        label: "소요시간",
-        borderColor: "#3e95cd",
-        fill: false
-      }, {
-        data: [50,52,54,56,57,58,60,61,64,65],
-        label: "타자속도",
-        borderColor: "#8e5ea2",
-        fill: false
-      }, {
-        data: [40,38,37,33,28,25,23,20,19,13],
-        label: "오타횟수",
-        borderColor: "#3cba9f",
-        fill: false
-      }, {
-        data: [50,53,54,57,60,63,65,67,70,74],
-        label: "정확도",
-        borderColor: "#e8c3b9",
-        fill: false
+      type: 'line',
+      data: {
+        labels: arr_dt2.slice(-10),
+        datasets: [{
+            data: arr_pt.slice(-10),
+            label: "소요시간",
+            borderColor: "#3e95cd",
+            fill: false
+          }, {
+            data: arr_sp.slice(-10),
+            label: "타자속도",
+            borderColor: "#8e5ea2",
+            fill: false
+          }, {
+            data: arr_fn.slice(-10),
+            label: "오타횟수",
+            borderColor: "#3cba9f",
+            fill: false
+          }, {
+            data: arr_acc.slice(-10),
+            label: "정확도",
+            borderColor: "#e8c3b9",
+            fill: false
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: '기간별 소요시간, 타자속도, 오타횟수, 정확도 그래프'
+        }
       }
-    ]
-  },
-  options: {
-    title: {
-      display: true,
-      text: '기간별 소요시간, 타자속도, 오타횟수, 정확도 그래프'
-    }
-  }
 });
 </script>
 
