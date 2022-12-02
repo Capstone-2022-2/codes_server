@@ -28,7 +28,8 @@ class CategoryDetailView(DetailView, MultipleObjectMixin):
 
     def get_context_data(self, **kwargs):
         object_list = Post.objects.filter(category=self.get_object())
-        return super(CategoryDetailView, self).get_context_data(object_list=object_list, **kwargs)
+        reverse_ulist = object_list[::-1]
+        return super(CategoryDetailView, self).get_context_data(object_list=reverse_ulist, **kwargs)
 
 
 class CategoryListView(ListView):

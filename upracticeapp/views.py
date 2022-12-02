@@ -38,7 +38,7 @@ def upractice_first(request):
             context = {'uall': uall}
             local_url = "http://127.0.0.1:8000/upractice/"
             url = "http://15.164.3.60/upractice/"
-            return HttpResponseRedirect(url, context)
+            return HttpResponseRedirect(local_url, context)
 
 
     except Exception as identifier:
