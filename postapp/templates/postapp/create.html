@@ -25,6 +25,10 @@
         </div>
     <form action="{% url 'postapp:create' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        <select style="height:2rem; width: 30rem;" name="category">
+            <option name="free">자유게시판</option>
+            <option name="question">질문게시판</option>
+        </select>
         {% bootstrap_form form %}
         <input type="submit" class="w-btn w-btn-ccc col-4 mt-4">
     </form>
