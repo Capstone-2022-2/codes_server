@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.views.generic.edit import FormMixin
 
+from boardapp.models import PostCategory
 from commentapp.forms import CommentCreationForm
 from commentapp.models import Comment
 from postapp.dacorators import post_ownership_required
@@ -21,6 +22,10 @@ class PostCreateView(CreateView):
 
     def form_valid(self, form):
         temp_post = form.save(commit=False)
+        category = form.data.get('category')
+        category = PostCategory.objects.get(post_category=category)
+        print(category)
+        temp_post.category = category
         temp_post.writer = self.request.user
         temp_post.save()
         return super().form_valid(form)
