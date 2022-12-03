@@ -25,7 +25,7 @@
         </div>
     <form action="{% url 'postapp:create' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <select style="height:2rem; width: 30rem;" name="category">
+        <select style="height:2.3rem; width: 31rem;" name="category">
             <option name="free">자유게시판</option>
             <option name="question">질문게시판</option>
         </select>
