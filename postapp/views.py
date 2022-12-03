@@ -29,7 +29,11 @@ class PostCreateView(CreateView):
         temp_post.writer = self.request.user
         temp_post.save()
         return super().form_valid(form)
-
+        post = Post()
+        try:
+            post.image = request.FILES['image']
+        except:
+            post.image = None
 
     def get_success_url(self):
         return reverse('postapp:detail', kwargs={'pk':self.object.pk})
