@@ -40,20 +40,21 @@
     </style>
 
 
+
     <div class="korean"
          style="height: 36rem; width: 100%; display: flex; justify-content: center; margin-top: 4%; padding-left: 4%;">
         <div style="height: 100%; width: 80%">
             <div style="padding:1rem; border: 1px solid #504DD2;border-radius: 2rem; display: inline-block;height: 100%; width: 24%; margin-right:.5%;vertical-align: top">
                 <p class="korean" style="text-align: center; margin-top: 10%; font-size: large">내정보<br></p>
-                    {% if not user.is_authenticated %}
+                {% if not user.is_authenticated %}
                     <div style="text-align: center; margin-top: 20%;">
                         회원가입을 해주세요.
                     </div>
                     <div style="text-align: center; height: 40%; margin-top: 1rem">
                         <p style="text-decoration: none;">회원정보가 없습니다.</p>
                     </div>
-                    {% else %}
-                        {% if user.profile.m_emoticon.url %} <!-- 프로필 존재할 때 이미지-->
+                {% else %}
+                    {% if user.profile.m_emoticon.url %} <!-- 프로필 존재할 때 이미지-->
                         <img src="{{ user.profile.m_emoticon.url }}" alt=""
                              style="height: 12rem; width: 12rem; border-radius: 20rem;margin-left: 2.7rem;
                                                 border: 3px solid black; margin-top: 20%">
@@ -62,7 +63,7 @@
                                 {{ user.profile.user_nick }} 님 <br> 연습결과 <!--닉네임-->
                             </h2>
                         </div>
-                        {% else %} <!-- 프로필 존재하지 않을 때 이미지 없이 빈 동그라미-->
+                    {% else %} <!-- 프로필 존재하지 않을 때 이미지 없이 빈 동그라미-->
                         <div style="text-align: center; margin-top: 20%;">
                             <p style="height: 12rem; width: 12rem; border-radius: 20rem; margin: 0 auto;
                                                         border: 3px solid black;"></p>
@@ -72,8 +73,8 @@
                                 </p>
                             </div>
                         </div>
-                        {% endif %}
                     {% endif %}
+                {% endif %}
 
             </div>
             <div style="padding:2.5rem 2rem; border: 1px solid #504DD2;border-radius: 2rem; display: inline-block;height: 100%; width: 70%; margin-right:.5%;vertical-align: top">
@@ -114,63 +115,83 @@
                 <div style="height: auto; padding: 0 1%;">
                     <div style="display:inline-block;width: 32%">
                         <form action="{% url 'practiceapp:manage' %}" method="post">
-                        {% csrf_token %}
+                            {% csrf_token %}
                             {% if not user.is_authenticated %}
-                            <input type="submit" style="background-color: lightslategray" class="w-btn w-btn-ccc col-12" name="manageresult" value="결과 저장하기" disabled>
+                                <input type="submit" style="background-color: lightslategray"
+                                       class="w-btn w-btn-ccc col-12" name="manageresult" value="결과 저장하기" disabled>
                             {% else %}
-                            <input type="submit" class="w-btn bc col-12" name="manageresult" value="결과 저장하기">
-                            <input type="hidden" name="score2" value="{{ score2 }}">
-                            <input type="hidden" name="speed" value="{{ speed }}">
-                            <input type="hidden" name="pday" value="{{ pday }}">
-                            <input type="hidden" name="time" value="{{ TIME }}">
-                            <input type="hidden" name="miss" value="{{ miss }}">
-                            <input type="hidden" name="summary" value="summary 값">
-                            <input type="hidden" name="pnum" value="{{ pnum }}">
-                            <input type="hidden" name="url" value="{{ request.get_full_path }}">
+                                <script>
+                                    var doubleSubmitFlag = false;
+
+                                    function doubleSubmitCheck() {
+                                        if (doubleSubmitFlag) {
+                                            return doubleSubmitFlag;
+                                        } else {
+                                            doubleSubmitFlag = true;
+                                            return false;
+                                        }
+                                    }
+
+                                    function insert() {
+                                        if (doubleSubmitCheck()) return;
+
+                                        alert("결과 저장이 완료되었습니다. (＊중복저장주의＊)");
+                                    }
+                                </script>
+                                <input onclick="insert();" type="submit" class="w-btn bc col-12"
+                                       name="manageresult" value="결과 저장하기">
+                                <input type="hidden" name="score2" value="{{ score2 }}">
+                                <input type="hidden" name="speed" value="{{ speed }}">
+                                <input type="hidden" name="pday" value="{{ pday }}">
+                                <input type="hidden" name="time" value="{{ TIME }}">
+                                <input type="hidden" name="miss" value="{{ miss }}">
+                                <input type="hidden" name="summary" value="summary 값">
+                                <input type="hidden" name="pnum" value="{{ pnum }}">
+                                <input type="hidden" name="url" value="{{ request.get_full_path }}">
                             {% endif %}
-                    </form>
+                        </form>
                     </div>
                     <div style="display:inline-block;width: 32%">
                         <form action="{% url 'practiceapp:manage' %}" method="get">
-                        {% csrf_token %}
-                        <input type="submit" class="w-btn w-btn-ccc col-12" name="replay" value="계속하기">
+                            {% csrf_token %}
+                            <input type="submit" class="w-btn w-btn-ccc col-12" name="replay" value="계속하기">
                         </form>
                     </div>
                     <div style="display:inline-block; width: 32%">
                         {% if pnum %}
-                        <form action="{% url 'practiceapp:rerere' pk=pnum %}" method="get">
-                            {% csrf_token %}
-                            <input type="submit" class="w-btn w-btn-ccc col-12" name="rerere" value="다시하기">
-                        </form>
+                            <form action="{% url 'practiceapp:rerere' pk=pnum %}" method="get">
+                                {% csrf_token %}
+                                <input type="submit" class="w-btn w-btn-ccc col-12" name="rerere" value="다시하기">
+                            </form>
                         {% endif %}
                     </div>
                 </div>
-<!--                <p>-->
-<!--                    <form action="{% url 'practiceapp:manage' %}" method="post">-->
-<!--                        {% csrf_token %}-->
-<!--                            <input type="submit" class="w-btn w-btn-ccc col-3" name="manageresult" value="결과 저장하기">-->
-<!--                            <input type="hidden" name="score2" value="{{ score2 }}">-->
-<!--                            <input type="hidden" name="speed" value="{{ speed }}">-->
-<!--                            <input type="hidden" name="pday" value="{{ pday }}">-->
-<!--                            <input type="hidden" name="time" value="{{ TIME }}">-->
-<!--                            <input type="hidden" name="miss" value="{{ miss }}">-->
-<!--                            <input type="hidden" name="summary" value="summary 값">-->
-<!--                            <input type="hidden" name="pnum" value="{{ pnum }}">-->
-<!--                            <input type="hidden" name="url" value="{{ request.get_full_path }}">-->
-<!--                    </form>-->
+                <!--                <p>-->
+                <!--                    <form action="{% url 'practiceapp:manage' %}" method="post">-->
+                <!--                        {% csrf_token %}-->
+                <!--                            <input type="submit" class="w-btn w-btn-ccc col-3" name="manageresult" value="결과 저장하기">-->
+                <!--                            <input type="hidden" name="score2" value="{{ score2 }}">-->
+                <!--                            <input type="hidden" name="speed" value="{{ speed }}">-->
+                <!--                            <input type="hidden" name="pday" value="{{ pday }}">-->
+                <!--                            <input type="hidden" name="time" value="{{ TIME }}">-->
+                <!--                            <input type="hidden" name="miss" value="{{ miss }}">-->
+                <!--                            <input type="hidden" name="summary" value="summary 값">-->
+                <!--                            <input type="hidden" name="pnum" value="{{ pnum }}">-->
+                <!--                            <input type="hidden" name="url" value="{{ request.get_full_path }}">-->
+                <!--                    </form>-->
 
-<!--                    <form action="{% url 'practiceapp:manage' %}" method="get">-->
-<!--                        {% csrf_token %}-->
-<!--                        <input type="submit" class="w-btn w-btn-ccc col-3" name="replay" value="계속하기">-->
-<!--                    </form>-->
+                <!--                    <form action="{% url 'practiceapp:manage' %}" method="get">-->
+                <!--                        {% csrf_token %}-->
+                <!--                        <input type="submit" class="w-btn w-btn-ccc col-3" name="replay" value="계속하기">-->
+                <!--                    </form>-->
 
-<!--                    {% if pnum %}-->
-<!--                    <form action="{% url 'practiceapp:rerere' pk=pnum %}" method="get">-->
-<!--                        {% csrf_token %}-->
-<!--                        <input type="submit" class="w-btn w-btn-ccc col-3" name="rerere" value="다시하기">-->
-<!--                    </form>-->
-<!--                    {% endif %}-->
-<!--                </p>-->
+                <!--                    {% if pnum %}-->
+                    <!--                    <form action="{% url 'practiceapp:rerere' pk=pnum %}" method="get">-->
+                    <!--                        {% csrf_token %}-->
+                    <!--                        <input type="submit" class="w-btn w-btn-ccc col-3" name="rerere" value="다시하기">-->
+                    <!--                    </form>-->
+                    <!--                    {% endif %}-->
+                <!--                </p>-->
             </div>
 
         </div>
