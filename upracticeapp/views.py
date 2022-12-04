@@ -74,6 +74,10 @@ def uresult(request):
         uback = request.GET.get('back')
         uscore2 = 100 * (int(uscore) - (int(umiss) * 0.7 + int(uback) * 0.3)) / int(uscore)
         uscore2 = round(uscore2, 2)
+        if uscore2 < 0:
+            uscore2 = 0
+        else:
+            uscore2 = uscore2
 
 
         print(uTIME, uscore, umiss, user, uspeed, upnum, uscore2)

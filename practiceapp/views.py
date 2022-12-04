@@ -130,6 +130,11 @@ def result(request):
         score2 = 100 * (int(score)-(int(miss)*0.7 + int(back)*0.3))/int(score)
         score2 = round(score2,2)
 
+        if score2 < 0:
+            score2 = 0
+        else:
+            score2 = score2
+
         print(pnum,TIME,score,miss,user,speed,score2)
 
         context = {'TIME': TIME, 'score': score, 'miss':miss, 'user':user, 'pday':pday,
