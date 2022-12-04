@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'upracticeapp',
     'bootstrap4',
     'sass_processor',
+    'storages',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -154,6 +156,22 @@ LOGOUT_REDIRECT_URL = reverse_lazy('mainapp:mainpage')
 
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+###########################AWS
+AWS_ACCESS_KEY_ID = 'AKIAV6TAQVC6USDOS7HN' # .csv 파일에 있는 내용을 입력 Access key ID
+AWS_SECRET_ACCESS_KEY = 'Ax4CsQyV8sSAVnFiGfd9G460BCp3B9XtTpc3M8FX' # .csv 파일에 있는 내용을 입력 Secret access key
+AWS_REGION = 'ap-northeast-2'
+
+###S3 Storages
+AWS_STORAGE_BUCKET_NAME = 'codes-bucket' # 설정한 버킷 이름
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIAFILES_LOCATION = 'media'
+STATICFILES_LOCATION = 'static'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'path/to/store/my/files/')

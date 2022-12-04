@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, request
 from django.shortcuts import render
 
 # Create your views here.
@@ -27,13 +27,12 @@ class PostCreateView(CreateView):
         print(category)
         temp_post.category = category
         temp_post.writer = self.request.user
+        try:
+            temp_post.image = request.FILES['image']
+        except:
+            temp_post.image = None
         temp_post.save()
         return super().form_valid(form)
-        post = Post()
-        try:
-            post.image = request.FILES['image']
-        except:
-            post.image = None
 
     def get_success_url(self):
         return reverse('postapp:detail', kwargs={'pk':self.object.pk})
