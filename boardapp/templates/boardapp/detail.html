@@ -67,9 +67,15 @@
         관리자만 접근 허용
     </a>
     {% else %}
-    <a href="{% url 'postapp:create' %}" class="w-btn w-btn-ccc col-1.5 mt-4">
-        글쓰기
-    </a>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'postapp:create' %}" class="w-btn w-btn-ccc col-1.5 mt-4">
+                글쓰기
+            </a>
+        {% else %}
+            <a href="{% url 'mainapp:login' %}?next=/" class="w-btn w-btn-ccc col-1.5 mt-4">
+                로그인
+            </a>
+        {% endif %}
     {% endif %}
     </div>
 
